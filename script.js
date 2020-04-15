@@ -62,7 +62,7 @@ let directions = [
 let intervalID
 
 const cellAA = ['　', '■', '・']
-let characters = [new Character('Ｐ'), new Character('Ｒ'), new Character('Ｃ')]
+let characters = [new Character('Ｐ'), new Character('Ｒ'), new Character('Ｃ')]
 let player = characters[character.player]
 let enemies = [characters[character.enemy0], characters[character.enemy1]]
 
