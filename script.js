@@ -1,5 +1,3 @@
-'use strict'
-
 class Vec2 {
   constructor(x, y) {
     this.x = x
@@ -61,10 +59,13 @@ let directions = [
 ]
 let intervalID
 
-const cellAA = ['　', '■', '・']
-let characters = [new Character('Ｐ'), new Character('Ｒ'), new Character('Ｃ')]
+const cellAA = ['🤍', '⏹', '❤️']
+let characters = [new Character('😀'), new Character('🥶'), new Character('😡')]
 let player = characters[character.player]
 let enemies = [characters[character.enemy0], characters[character.enemy1]]
+
+const divEnd = document.querySelector('div#end')
+const divGame = document.querySelector('div#game')
 
 init()
 
@@ -109,10 +110,9 @@ function draw() {
     html += '<br>'
   }
 
-  html += `<br> [w, x, a, d]: プレイヤーの移動`
+  html += `<br>プレイヤーの移動は矢印キー`
 
-  let div = document.querySelector('div')
-  div.innerHTML = html
+  divGame.innerHTML = html
 }
 
 function onKeyDown(e) {
@@ -144,10 +144,7 @@ function onKeyDown(e) {
       player.pos = new Vec2(targetPos.x, targetPos.y)
       maze[targetPos.y][targetPos.x] = cell.none
   }
-  if (isEnd()) {
-    init()
-    return
-  }
+  if (endOperation(isEnd())) return
   draw()
 }
 
@@ -160,10 +157,7 @@ function loopPos(v) {
 
 function interval() {
   for (let i = 0; i < enemies.length; i++) enemyMove(enemies[i])
-  if (isEnd()) {
-    init()
-    return
-  }
+  if (endOperation(isEnd())) return
 }
 
 function enemyMove(enemy) {
@@ -212,13 +206,24 @@ function isEnd() {
       enemies[i].pos.x === player.pos.x &&
       enemies[i].pos.y === player.pos.y
     ) {
-      alert('You are loss')
-      return true
+      return { status: true, message: 'あなたの負け' }
     }
 
   for (let i = 0; i < maze.length; i++)
     for (let j = 0; j < maze[i].length; j++)
-      if (maze[i][j] === cell.dot) return false
-  alert('You are Win!!')
-  return true
+      if (maze[i][j] === cell.dot) return { status: false, message: '' }
+  return { status: true, message: 'あなたの勝ち!!' }
+}
+
+function endOperation(result) {
+  if (!result.status) return
+  const ans = window.confirm(`${result.message}\n\n続けますか〜？`)
+  if (ans) {
+    init()
+    return true
+  } else {
+    clearInterval(intervalID)
+    divGame.classList.add('off')
+  }
+  return false
 }

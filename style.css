@@ -1,0 +1,8 @@
+body {
+  font-family: Consolas, 'Courier New', Courier, Monaco, monospace,
+    'ＭＳ ゴシック', 'MS Gothic', Osaka−等幅;
+  line-height: 1;
+}
+.off {
+  opacity: 0.4;
+}
